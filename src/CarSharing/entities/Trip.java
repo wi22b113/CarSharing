@@ -6,7 +6,7 @@ import CarSharing.provided.DateTime;
 import CarSharing.provided.Location;
 import CarSharing.provided.TripStatus;
 
-
+import static CarSharing.provided.TripStatus.*;
 
 
 /**
@@ -30,7 +30,7 @@ public class Trip implements Comparable<Trip> {
 	private Customer renter;
 	private Location startLocation;
 	private DateTime startTime;
-	private TripStatus	status = TripStatus.CREATED;
+	private TripStatus	status = CREATED;
 
 	public Trip(Car car, Customer customer, Rate rate){
 		if (car == null || customer == null || rate == null){
@@ -45,7 +45,7 @@ public class Trip implements Comparable<Trip> {
 
 	public Trip(Car car, Customer renter, Rate rate, Location startLocation, DateTime startTime){
 		this(car,renter,rate);
-		this.status = TripStatus.STARTED;
+		this.status = STARTED;
 		this.startLocation = startLocation;
 		this.startTime = startTime;
 	}
@@ -55,7 +55,7 @@ public class Trip implements Comparable<Trip> {
 		this.endLocation = endLocation;
 		this.endTime = endTime;
 		this.distance = distance;
-		this.status = TripStatus.COMPLETED;
+		this.status = COMPLETED;
 	}
 
 	public Trip(Trip tr) {
@@ -72,22 +72,22 @@ public class Trip implements Comparable<Trip> {
 
 	public Trip start(Location startLocation, DateTime startTime){
 		if (startLocation == null || startTime == null) throw new IllegalArgumentException();
-		if (status == TripStatus.COMPLETED || status == TripStatus.STARTED) throw new IllegalStateException();
+		if (status == COMPLETED || status == STARTED) throw new IllegalStateException();
 
 		this.startLocation = startLocation;
 		this.startTime = startTime;
-		status = TripStatus.STARTED;
+		status = STARTED;
 		return this;
 	}
 
 	public Trip end(Location endLocation, DateTime endTime, double distance){
 		if (endLocation == null || endTime == null) throw new IllegalArgumentException();
-		if (status != TripStatus.STARTED) throw new IllegalStateException();
+		if (status != STARTED) throw new IllegalStateException();
 
 		this.endTime = endTime;
 		this.endLocation = endLocation;
 		this.distance = distance;
-		status = TripStatus.COMPLETED;
+		status = COMPLETED;
 
 		return this;
 	}
@@ -114,7 +114,7 @@ public class Trip implements Comparable<Trip> {
 
 
 	public int compareTo(Trip o) {
-		if(o.getStatus()==TripStatus.CREATED){
+		if(o.getStatus()== CREATED){
 			return -1;
 		}
 		if(startTime == null && o.startTime == null ){
@@ -166,7 +166,7 @@ public class Trip implements Comparable<Trip> {
 	 * @return the difference in seconds if this trip is completed, zero otherwise
 	 */
 	public int duration() {
-		if (status == TripStatus.COMPLETED)
+		if (status == COMPLETED)
 			return (int) (startTime.diff(endTime));
 
 		return 0;
